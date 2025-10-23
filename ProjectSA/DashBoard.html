@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS YAIRUY - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            }
+        .sidebar-link {
+            text-decoration: none;
+            color: #333;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .sidebar-link.active {
+            background-color: #ff4d4f;
+            color: white;
+        }
+        .sidebar-link:hover:not(.active) {
+            background-color: #f0f0f0;
+        }
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .welcome-text h1 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        .welcome-text p {
+            color: #666;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .notification-icon {
+            font-size: 1.5rem;
+            color: #666;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .revenue-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .revenue-card {
+            background-color: #ff4d4f;
+            padding: 1.5rem;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .revenue-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .revenue-amount {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .dashboard-widgets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .widget {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .widget h3 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .customer-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .customer-table th,
+        .customer-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .customer-table th {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .transaction-graph {
+            width: 100%;
+            height: 200px;
+            position: relative;
+        }
+
+        .graph-lines {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            padding: 20px 0;
+            color: #666;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="DashBoard.html" class="sidebar-link active">Dashboard</a>
+        <a href="Product.html" class="sidebar-link">Product</a>
+        <a href="Accounts.html" class="sidebar-link">Accounts</a>
+        <a href="Catagories.html" class="sidebar-link">Categories</a>
+        <a href="Cart.html" class="sidebar-link">Cart</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="welcome-text">
+                <h1>Welcomeback Boss</h1>
+                <p>Welcome to dashboard</p>
+            </div>
+            <div class="user-profile">
+                <span class="notification-icon">🔔</span>
+                <div class="user-info">
+                    <span>YAIRUY</span>
+                    <img src="mascot.png" alt="User Avatar" class="user-avatar">
+                </div>
+            </div>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search the dash board">
+        </div>
+        <div class="revenue-cards">
+            <div class="revenue-card">
+                <h3>Total Revenue</h3>
+                <div class="revenue-amount">$XXX,XXX</div>
+            </div>
+            <div class="revenue-card">
+                <h3>Total Revenue</h3>
+                <div class="revenue-amount">$XXX,XXX</div>
+            </div>
+            <div class="revenue-card">
+                <h3>Total Revenue</h3>
+                <div class="revenue-amount">$XXX,XXX</div>
+            </div>
+        </div>
+
+        <div class="dashboard-widgets">
+            <div class="widget">
+                <h3>Transaction Activity</h3>
+                <div class="transaction-graph">
+                    <div class="graph-lines">
+                        <div>50</div>
+                        <div>40</div>
+                        <div>30</div>
+                        <div>20</div>
+                        <div>10</div>
+                        <div>0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget">
+                <h3>Customers detail</h3>
+                <table class="customer-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Total Orders</th>
+                            <th>Laps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Olivia</td>
+                            <td>Total</td>
+                            <td>24x</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>Total</td>
+                            <td>23x</td>
+                        </tr>
+                        <tr>
+                            <td>Nalkit</td>
+                            <td>Total</td>
+                            <td>16x</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

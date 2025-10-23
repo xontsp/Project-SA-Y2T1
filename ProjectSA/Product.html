@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS YAIRUY - Product</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .sidebar h2 {
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            margin-bottom: 2rem; 
+            color: #333;
+        }
+
+        .sidebar-link {
+            text-decoration: none;
+            color: #333;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-link.active {
+            background-color: #ff4d4f;
+            color: white;
+        }
+
+        .sidebar-link:hover:not(.active) {
+            background-color: #f0f0f0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: #333;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .search-filter {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-filter h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-controls input,
+        .filter-controls select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .product-table {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            font-weight: normal; 
+            color: #666;
+            font-size: 0.9rem;
+            padding-top: 0;
+            padding-bottom: 0.5rem;
+            border-bottom: none;
+        }
+
+        td {
+            background-color: white;
+            padding-top: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: none; 
+        }
+
+        tbody tr {
+            transition: transform 0.2s ease;
+        }
+        #productTableBody tr {
+            border-bottom: 1px solid #eee; 
+        }
+        #productTableBody tr:last-child {
+            border-bottom: none; 
+        }
+        #productTableBody tr.visible {
+            display: table-row;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .status-instock { 
+            background-color: #e0f7ff; 
+            color: #03a9f4; 
+        }
+        .status-available {
+            background-color: #e6ffe6; 
+            color: #008000; 
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            line-height: 1; 
+        }
+        .btn-edit {
+            background-color: #f0f0f0; 
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .btn-delete {
+            background-color: #ff4d4f;
+            color: white;
+        }
+
+        .pagination-container {
+            margin-top: 1.5rem;
+            padding: 1rem 0; 
+            background-color: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pagination-info {
+            color: #666;
+            font-size: 0.9rem;
+            background-color: transparent; 
+            padding: 0; 
+            border: none;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .page-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .page-button:hover {
+            background-color: #f0f0f0;
+            border-color: #ccc;
+        }
+
+        .page-button.active {
+            background-color: #ff4d4f;
+            color: white;
+            border-color: #ff4d4f;
+        }
+
+        .page-button:disabled {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+            border-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        
+        <a href="DashBoard.html" class="sidebar-link">Dashboard</a>
+        <a href="Product.html" class="sidebar-link active">Product</a>
+        <a href="Accounts.html" class="sidebar-link">Accounts</a>
+        <a href="Catagories.html" class="sidebar-link">Categories</a>
+        <a href="Cart.html" class="sidebar-link">Cart</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>POS YAIRUY</h1>
+            <div class="user-profile">
+                <span class="notification-icon">🔔</span>
+                <div class="user-info">
+                    <span>YAIRUY</span>
+                    <img src="mascot.png" alt="User Avatar" class="user-avatar" style="border: 2px solid #ff4d4f;">
+                </div>
+            </div>
+        </div>
+
+        <div class="search-filter">
+            <h2>Search and Filter Data</h2>
+            <div class="filter-controls">
+                <input type="text" placeholder="Search product name..">
+                <select>
+                    <option value="">เลือกหมวดหมู่</option>
+                    <option value="อาหาร">อาหาร</option>
+                    <option value="เครื่องดื่ม">เครื่องดื่ม</option>
+                    <option value="ขนม">ขนม</option>
+                </select>
+                <select>
+                    <option value="">เลือกสถานะ</option>
+                    <option value="พร้อมขาย">พร้อมขาย</option>
+                    <option value="สินค้าหมด">สินค้าหมด</option>
+                </select>
+                <select>
+                    <option value="">ซื้อ</option>
+                    <option value="มากสุด">มากสุด</option>
+                    <option value="น้อยสุด">น้อยสุด</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="product-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ชื่อสินค้า ▲</th>
+                        <th>หมวดหมู่</th>
+                        <th>ราคา</th>
+                        <th>สต็อก</th>
+                        <th>สถานะ</th>
+                        <th>วันหมดอายุ</th>
+                        <th>รับหน้าร้าน</th>
+                        <th>การจัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                    </tbody>
+            </table>
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    แสดง 1 ถึง 5 จาก 10 รายการ
+                </div>
+                <div class="pagination">
+                    <button class="page-button" id="prevPage" onclick="changePage(-1)">ก่อนหน้า</button>
+                    <button class="page-button active" onclick="goToPage(1)">1</button>
+                    <button class="page-button" onclick="goToPage(2)">2</button>
+                    <button class="page-button" id="nextPage" onclick="changePage(1)">ถัดไป</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const productData = [
+            { name: 'Chocolate', category: 'ไม่ระบุ', price: '12', stock: '23', status: 'พร้อมขาย', expire: '-', frontDesk: '-', lastEdit: '' },
+            { name: 'Coke', category: 'ไม่ระบุ', price: '10', stock: '96', status: 'พร้อมขาย', expire: '-', frontDesk: '-', lastEdit: '' },
+            { name: 'Gordan X4', category: 'ไม่ระบุ', price: '15,299', stock: '1', status: 'พร้อมขาย', expire: '-', frontDesk: '-', lastEdit: '' },
+            { name: 'JordanX0', category: 'ไม่ระบุ', price: '2,999', stock: '2', status: 'พร้อมขาย', expire: '-', frontDesk: '-', lastEdit: '' },
+            { name: 'Pepper sheezy burger', category: 'ไม่ระบุ', price: '10', stock: '96', status: 'พร้อมขาย', expire: '-', frontDesk: '-', lastEdit: '' },
+            { name: 'แซนวิชทูน่า', category: 'อาหาร', price: '25', stock: '45', status: 'พร้อมขาย', expire: '-', frontDesk: 'Yes', lastEdit: '' },
+            { name: 'ข้าวกล่องหมูทอด', category: 'อาหาร', price: '45', stock: '30', status: 'สินค้าหมด', expire: '25/11/2025', frontDesk: 'No', lastEdit: '' },
+            { name: 'นมเปรี้ยว', category: 'เครื่องดื่ม', price: '10', stock: '80', status: 'พร้อมขาย', expire: '01/01/2026', frontDesk: 'Yes', lastEdit: '' },
+            { name: 'มันฝรั่งทอด', category: 'ขนม', price: '20', stock: '65', status: 'พร้อมขาย', expire: '-', frontDesk: 'Yes', lastEdit: '' },
+            { name: 'คุกกี้ช็อคโกแลต', category: 'ขนม', price: '15', stock: '0', status: 'สินค้าหมด', expire: '-', frontDesk: 'No', lastEdit: '' }
+        ];
+
+        let currentPage = 1;
+        const itemsPerPage = 5;
+        const totalPages = Math.ceil(productData.length / itemsPerPage);
+
+        function getStatusClass(text) {
+            if (text === 'พร้อมขาย') return 'status-available';
+            if (text === 'ไม่ระบุ') return 'status-instock';
+            if (text === 'สินค้าหมด') return 'status-unavailable';
+            return ''; 
+        }
+
+        function createProductRow(product) {
+            return `
+                <tr>
+                    <td>${product.name}</td>
+                    <td><span class="status-badge ${getStatusClass(product.category)}">${product.category}</span></td>
+                    <td>${product.price}</td>
+                    <td>${product.stock}</td>
+                    <td><span class="status-badge ${getStatusClass(product.status)}">${product.status}</span></td>
+                    <td>${product.expire}</td>
+                    <td>${product.frontDesk}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-edit">แก้ไข</button>
+                            <button class="btn btn-delete">ลบ</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function updateTable() {
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = '';
+            
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const dataToDisplay = productData.slice(start, end);
+            
+            dataToDisplay.forEach(product => {
+                tbody.innerHTML += createProductRow(product);
+            });
+
+            const actualEnd = Math.min(end, productData.length);
+            document.querySelector('.pagination-info').textContent = `แสดง ${start + 1} ถึง ${actualEnd} จาก ${productData.length} รายการ`;
+            
+            document.querySelectorAll('.pagination .page-button').forEach(btn => {
+                const pageNum = parseInt(btn.textContent);
+                if (!isNaN(pageNum)) {
+                    btn.classList.remove('active');
+                    if (pageNum === currentPage) {
+                        btn.classList.add('active');
+                    }
+                }
+            });
+
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+        }
+
+        function changePage(delta) {
+            const newPage = currentPage + delta;
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                updateTable();
+            }
+        }
+
+        function goToPage(page) {
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                updateTable();
+            }
+        }
+        updateTable();
+    </script>
+</body>
+</html>
