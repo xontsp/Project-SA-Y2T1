@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS YAIRUY - Accounts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-top-right-radius: 20px; 
+            border-bottom-right-radius: 20px; 
+        }
+        .sidebar h2 {
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            margin-bottom: 2rem; 
+            color: #333;
+        }
+        .sidebar-link {
+            text-decoration: none;
+            color: #333;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .sidebar-link.active {
+            background-color: #ff4d4f;
+            color: white;
+        }
+        .sidebar-link:hover:not(.active) {
+            background-color: #f0f0f0;
+        }
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .notification-icon {
+            font-size: 1.5rem;
+            color: #666;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ff4d4f;
+        }
+        .accounts-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            min-height: 80vh;
+        }
+        .accounts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+        }
+        .accounts-header h2 {
+            font-size: 1.5rem;
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid #ff4d4f;
+            line-height: 1;
+        }
+t {
+            background-color: #ff4d4f; 
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-add-account:hover {
+            background-color: #0b5ed7;
+        }
+        
+        /* Table Styles */
+        .account-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem;
+        }
+
+        .account-table th, 
+        .account-table td {
+            padding: 0.8rem 0.5rem;
+            text-align: left;
+        }
+        
+        /* ปรับตำแหน่งคอลัมน์แรกให้เล็กสำหรับ Checkbox */
+        .account-table th:first-child,
+        .account-table td:first-child {
+            width: 30px; 
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        /* ปรับตำแหน่งคอลัมน์สุดท้ายให้เล็กสำหรับ Actions */
+        .account-table th:last-child,
+        .account-table td:last-child {
+            width: 150px; /* ปรับขนาดเพิ่มให้มีที่ว่างสำหรับ 2 ปุ่ม */
+            text-align: right;
+        }
+        
+        /* สไตล์หัวตาราง */
+        .account-table th {
+            font-weight: normal; 
+            color: #666;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .account-table td {
+            background-color: transparent; 
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end; 
+            align-items: center; 
+        }
+        
+        /* ------------------------------------------------- */
+        /* ปุ่ม Actions (แก้ไข & ลบ) - สไตล์สี่เหลี่ยมผืนผ้า */
+        /* ------------------------------------------------- */
+        .btn-action {
+            padding: 0.5rem 1rem; /* ขนาดตามรูป Product/Accounts */
+            border: none;
+            border-radius: 4px; /* มุมมนเล็กน้อย */
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            line-height: 1; 
+            transition: background-color 0.2s;
+        }
+        
+        /* ปุ่ม แก้ไข (Light Grey) */
+        .btn-edit {
+            background-color: #f0f0f0; /* Light grey */
+            color: #333; /* Dark text */
+            border: 1px solid #e0e0e0; /* เพิ่มขอบเล็กน้อยตามภาพ */
+        }
+
+        .btn-edit:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* ปุ่ม ลบ (Red) */
+        .btn-delete {
+            background-color: #ff4d4f; /* Red */
+            color: white;
+            border: 1px solid #ff4d4f;
+        }
+        .btn-delete:hover {
+            background-color: #e63946;
+            border-color: #e63946;
+        }
+        
+        /* สไตล์สำหรับแถวในตาราง */
+        .account-table tbody tr {
+            border-bottom: 1px solid #f0f0f0; 
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="DashBoard.html" class="sidebar-link">Dashboard</a>
+        <a href="Product.html" class="sidebar-link">Product</a>
+        <a href="Accounts.html" class="sidebar-link active">Accounts</a>
+        <a href="Catagories.html" class="sidebar-link">Categories</a>
+        <a href="Cart.html" class="sidebar-link">Cart</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="header-title">POS YAIRUY</div>
+            <div class="user-profile">
+                <span class="notification-icon">🔔</span>
+                <div class="user-info">
+                    <span>YAIRUY</span>
+                    <img src="mascot.png" alt="User Avatar" class="user-avatar">
+                </div>
+            </div>
+        </div>
+
+        <div class="accounts-container">
+            <div class="accounts-header">
+                <h2>จัดการผู้ใช้งาน</h2>
+                <button class="btn-add-account">
+                    + เพิ่มผู้ใช้งานใหม่
+                </button>
+            </div>
+
+            <table class="account-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>อีเมล</th>
+                        <th>ชื่อ</th>
+                        <th>นามสกุล</th>
+                        <th>เบอร์โทรศัพท์</th>
+                        <th>วันที่สมัคร</th>
+                        <th>อัปเดตล่าสุด</th>
+                        <th>สถานะ</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>jpae.wol@gmail.com</td>
+                        <td>Watanyu</td>
+                        <td>Onnum</td>
+                        <td>0842436077</td>
+                        <td>8/4/2569</td>
+                        <td>11/10/2568</td>
+                        <td>ใช้งาน</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action btn-edit">แก้ไข</button> 
+
+<button class="btn-action btn-delete">ลบ</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>tanapa@hotmail.com</td>
+                        <td>Tanadornpa</td>
+                        <td>Araikormairu</td>
+                        <td>9999999999</td>
+                        <td>11/10/2568</td>
+                        <td>11/10/2568</td>
+                        <td>ใช้งาน</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-action btn-edit">แก้ไข</button> 
+
+<button class="btn-action btn-delete">ลบ</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
